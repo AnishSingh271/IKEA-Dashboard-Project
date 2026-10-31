@@ -120,68 +120,19 @@ Reported results from the project analysis:
 - Revenue exhibits seasonal increases during the fourth quarter.
 
 
-## Sample SQL
-
-Handling mixed date formats during data import:
-
-```sql
-SELECT
-    Invoice,
-    StockCode,
-    Description,
-    Quantity,
-    COALESCE(
-        TRY_CONVERT(datetime2, InvoiceDate, 120),
-        TRY_CONVERT(datetime2, InvoiceDate, 105)
-    ) AS InvoiceDate,
-    TRY_CONVERT(decimal(10,2), Price) AS Price,
-    Customer_ID,
-    Country
-INTO dbo.RetailCombined
-FROM dbo.[Year 2009-2010];
-```
-
-## Sample Python
-
-RFM scoring using quintiles:
-
-```python
-rfm['R_Score'] = pd.qcut(
-    rfm['Recency'],
-    5,
-    labels=[5, 4, 3, 2, 1]
-).astype(int)
-
-rfm['F_Score'] = pd.qcut(
-    rfm['Frequency'].rank(method='first'),
-    5,
-    labels=[1, 2, 3, 4, 5]
-).astype(int)
-
-rfm['M_Score'] = pd.qcut(
-    rfm['Monetary'],
-    5,
-    labels=[1, 2, 3, 4, 5]
-).astype(int)
-```
-
 ## Project Structure
 
 ```text
 customer-rfm-analysis/
 │
 ├── 01_sql/
-│   ├── data_cleaning.sql
-│   └── exploratory_analysis.sql
+│   ── data_cleaning.sql
 │
 ├── 02_python/
-│   └── rfm_analysis.ipynb
+│   └── rfm_segmentation.ipynb
 │
 ├── 03_powerbi/
 │   └── customer_analytics_dashboard.pbix
-│
-├── data/
-│   └── README.md
 │
 └── README.md
 ```
